@@ -27,7 +27,7 @@ if [ "$resp" = "y" ]; then
 			#--remove <, >, and whitespaces from returned tweet using sed, then pipe it to a while loop in the variable $tweet:
 			sed -e 's/<//g' -e 's/>//g' -e '/^[ \t\r\n]*$/d' ~/tbuts-html/results/$line-$2.txt | while read tweet; do
 				#--output returned tweet to console for viewing:
-				echo "$tweets"
+				echo "$tweet"
 				#--add html tags to returned tweet and output it to the .html file:
 				echo "<li><p class="MsoQuote c23">"$tweet"</p></li><br>" >> ~/tbuts-html/results/$line-tweets-$2.html
 			#--finished loop:
