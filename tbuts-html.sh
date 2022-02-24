@@ -3,25 +3,26 @@
 #--if user calls script incorrectly, let them know how to call it:
 if [ $# -ne 2 ];
 then
-	echo "Usage: $0 usernames.txt searchterm";
+	echo "[:] Usage: $0 usernames.txt searchterm";
 	exit -1
 fi
 #--ask user to confirm start of script, define variable $resp:
 echo ""
-read -p "twint batch user tweetgrabber & search, shall we begin? (y/n) " resp
+read -p "[:] twint batch user tweetgrabber & search, shall we begin? (y/n) " resp
 echo ""
 #--if user enters 'y', begin loops to read/search tweets and save them:
 if [ "$resp" = "y" ]; then
 	#--create dir for search results/files:
-	mkdir ~/tbuts-html/results
+	mkdir -p ~/tbuts-html/results
+	cd ~/tbuts-html/results
 	#--define variable $lines as each line in a file $1, and start for loop:
-	lines=$(cat $1)
+	lines=$(cat ../$1)
 	for line in $lines;
 		do
 			#--tell the user what we are currently searching for:
-			echo "searching username $line, searchterm is $2..."
+			echo "[:] searching username $line, searchterm is $2..."
 			#--create folder for current username
-			mkdir ~/tbuts-html/results/$line
+			mkdir -p ~/tbuts-html/results/$line
 			#--use twint to return tweets matching our criteria, and output it to a .txt file:
 			twint -s $2 -u $line >> ~/tbuts-html/results/$line/$line-$2.txt
 			#--add necessary static html tags and css styles to the .html file for current search:
@@ -37,15 +38,23 @@ if [ "$resp" = "y" ]; then
 			#--add necessary static html tags to the end of the .html file:
 			echo "</article></ul></body></html>" >> ~/tbuts-html/results/$line/$line-tweets-$2.html
 			#--tell user where the output(s) are located:
-			echo ".txt output is ~/tbuts-html/results/$line/$line-$2.txt"
-			echo ".html output is ~/tbuts-html/results/$line/$line-tweets-$2.html"
+			echo "[:] .txt output is ~/tbuts-html/results/$line/$line-$2.txt"
+			echo "[:] .html output is ~/tbuts-html/results/$line/$line-tweets-$2.html"
 			echo ""
 		#--loop complete:
 		done
+		#--remove old tweets.html index file:
+		rm ./tweets.html
+		#--let the user know the .html index tree is being generated:
+		echo "[:] creating HTML index tree..."
+		#--use tree to create an index for the directory and file structure:
+		tree -h -H . >> tweets.html
+		echo ""
+		echo "[:] index tree complete."
 	#--let user know the script has finished:
-	echo "tbuts-html task complete."
+	echo "[:] tbuts-html task complete."
 	echo ""
 else
-	echo "exiting..."
+	echo "[:] exiting..."
 	exit -1
 fi
