@@ -1,23 +1,24 @@
 # tbuts-html - twint batch user tweetgrabber & search (html output)
-A bash script utilizing twint to read a .txt file of twitter usernames and output tweets as .html file(s)
+A bash script utilizing twint and tree to read .txt files of twitter usernames and search terms (respectively) and output tweets as .html file(s) with an index
  
 This script requires 
 
 	twint, see https://github.com/twintproject/twint for info
+	(I would recommend installing this via pip install twint instead of git clone)
 
 	tree, see https://linux.die.net/man/1/tree for info
  
 Usage:
 
-	sh tbuts-html.sh usernames.txt searchterm
+	sh tbuts-html.sh usernames.txt searchterms.txt
 
-	Create a .txt file in the main directory and add twitter usernames you would like to search, one per line.
-
-	Execute script and enter a term to search for.
+	Create a .txt file in the main directory and add twitter usernames you would like to search terms for, one per line.
+	
+	Create another .txt file in the main directory and add terms to search each twitter account for, one per line.
 
 Example: 
 
-	sh tbuts-html.sh users.txt freedom
+	sh tbuts-html.sh users.txt search.txt
 
 After the script completes, you should have a directory and files structured as such:
 
@@ -42,4 +43,11 @@ After the script completes, you should have a directory and files structured as 
 
 In the top directory you should find tweets.html, this is the main browseable index page.
 
-Running the script multiple times with the same usernames in the usernames.txt file should automatically put the result files into their respective folders, as long as the entries are spelled the same (ie. uppercase, lowercase matches).
+
+Update 2022-04-26: If you encounter the error:
+
+	ImportError: cannot import name 'CeilTimeout' from 'aiohttp.helpers'
+	
+Try installing aiohttp==3.7.0 by running:
+
+	pip install aiohttp==3.7.0
